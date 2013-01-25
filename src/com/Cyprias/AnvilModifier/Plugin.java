@@ -8,7 +8,11 @@ import java.util.HashMap;
 import net.minecraft.server.v1_4_R1.Item;
 import net.minecraft.server.v1_4_R1.ItemStack;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +29,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 
 public class Plugin extends JavaPlugin {
+	
+
 	private static Plugin instance = null;
 
 	public void onEnable() {
@@ -57,6 +63,9 @@ public class Plugin extends JavaPlugin {
 
 		createAdapter();
 		ProtocolLibrary.getProtocolManager().addPacketListener(pAdapter);
+		
+		//getCommand("am").setExecutor(new Commands());
+		
 	}
 
 	public void onDisable() {
@@ -75,6 +84,28 @@ public class Plugin extends JavaPlugin {
 		}
 	}
 
+	public class Commands implements CommandExecutor {
+
+		//Debugging cmd to set durability.
+		@Override
+		public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+			
+			if (args[0].equalsIgnoreCase("dur")) {
+				
+				Player p = (Player) sender;
+				
+				org.bukkit.inventory.ItemStack item = p.getItemInHand();
+				short dur = item.getDurability();
+				item.setDurability((short) (dur * 2));
+				
+			}
+			
+			
+			return false;
+		}
+		
+	}
+	
 	private PacketAdapter pAdapter;
 
 	private String getItemsName(ItemStack rawItem){
@@ -98,9 +129,9 @@ public class Plugin extends JavaPlugin {
 		
 		//Packets.Server.OPEN_WINDOW
 		//Packets.Server.WINDOW_ITEMS 69	105 
+		//Packets.Server.ITEM_DATA, Packets.Server.SET_EXPERIENCE, Packets.Server.CRAFT_PROGRESS_BAR
 		
-		pAdapter = new PacketAdapter(this, ConnectionSide.SERVER_SIDE, Packets.Server.SET_SLOT,
-			Packets.Server.ITEM_DATA, Packets.Server.SET_EXPERIENCE, Packets.Server.CRAFT_PROGRESS_BAR) {
+		pAdapter = new PacketAdapter(this, ConnectionSide.SERVER_SIDE, Packets.Server.SET_SLOT) {
 			public void onPacketSending(PacketEvent event) {
 				PacketContainer packet = event.getPacket();
 
@@ -123,7 +154,7 @@ public class Plugin extends JavaPlugin {
 
 					//	Logger.info("SET_SLOT size " + mods.size());
 						
-						Logger.debug("SET_SLOT a " + a + ", b: " + b);
+					//	Logger.debug("SET_SLOT a " + a + ", b: " + b);
 						
 						if (b == 0){//Item in first slot of anvil.
 							Logger.debug("SET_SLOT first slot: " + c);

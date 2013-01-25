@@ -26,6 +26,7 @@ public class InventoryListener implements Listener {
 		if (!(event.getInventory().getType() == InventoryType.ANVIL))
 			return;
 		
+		
 		HumanEntity e = event.getWhoClicked();
 		
 		if (!(e instanceof Player))
