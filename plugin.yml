@@ -3,6 +3,8 @@ main: com.Cyprias.AnvilModifier.Plugin
 author: Cyprias
 version: 0.0.1
 
+depend: [ProtocolLib]
+
 commands:
   am:
     description: Show menu.

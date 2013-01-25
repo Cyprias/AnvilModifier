@@ -1,23 +1,15 @@
 package com.Cyprias.AnvilModifier.listeners;
 
-import java.sql.SQLException;
-
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.Cyprias.AnvilModifier.ChatUtils;
 import com.Cyprias.AnvilModifier.Logger;
@@ -51,10 +43,11 @@ public class InventoryListener implements Listener {
 		if (event.getRawSlot() == 2 && event.getSlot() == 9) {
 			
 			ItemStack firstItem = event.getInventory().getItem(0);
-			
-			
 			ItemStack thirdItem = event.getCurrentItem();
 	
+			//ItemMeta meta = thirdItem.getItemMeta();
+			
+			
 			if (thirdItem.getItemMeta().getDisplayName() != firstItem.getItemMeta().getDisplayName()){
 				Logger.debug("Item has a new name, escaping...");
 				return;
@@ -63,11 +56,11 @@ public class InventoryListener implements Listener {
 			
 			Logger.debug("Anvil craft! " + event.getRawSlot() + " " + event.getSlot()  + ", " + thirdItem.getItemMeta().getDisplayName());
 			
-			//Give player the item in their currsor.
+			//Give player the item in their cursor.
 			//Doing this seems to keep the player's level/exp the same server side by client sees their level change.
 			event.setCursor(thirdItem);
 			
-			//Force update their exp so client sees their previous level. 
+			//Force update their exp so client sees their server level. 
 			setExp(p, p.getTotalExperience());
 			
 			//Remove items from first and second slots.
