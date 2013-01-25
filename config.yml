@@ -1,0 +1,15 @@
+properties:
+  # Chat prefix.
+  chat-prefix: '&7[&aAM&7] '
+  
+  # Default permission setting, if you want to use only permissions and ignore ops, set to false.
+  permission-default: op
+  
+  # Check for a new version on startup.
+  check-new-version: true
+  
+  # Show debug messages in console.
+  debug-messages: false
+  
+  # Show plugin messages to players in console.
+  show-plugin-replies: true

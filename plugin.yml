@@ -1,0 +1,8 @@
+name: AnvilModifier
+main: com.Cyprias.AnvilModifier.Plugin
+author: Cyprias
+version: 0.0.1
+
+commands:
+  am:
+    description: Show menu.
