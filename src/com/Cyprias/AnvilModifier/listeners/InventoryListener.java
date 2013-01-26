@@ -55,7 +55,7 @@ public class InventoryListener implements Listener {
 
 	
 			//ItemMeta meta = thirdItem.getItemMeta();
-			
+			Boolean highRepair = false;
 			if (thirdItem.getItemMeta() == null && firstItem != null && secondItem != null){
 				
 				if (!secondItem.getType().equals(Material.DIAMOND) && !secondItem.getType().equals(Material.IRON_INGOT) && !secondItem.getType().equals(Material.GOLD_INGOT)){
@@ -99,6 +99,8 @@ public class InventoryListener implements Listener {
 				//
 				//int percent = (thirdItem.getDurability() / type.getMaxDurability()) * 100;
 				
+				
+				
 				int repairAmount = type.getMaxDurability() / 4;
 				
 				
@@ -106,7 +108,7 @@ public class InventoryListener implements Listener {
 				Logger.debug("cur: " + thirdItem.getDurability() + ", max: " + type.getMaxDurability() );
 				
 				thirdItem.setDurability((short) (thirdItem.getDurability() - repairAmount));
-				
+				highRepair =true;
 				
 			}
 			
@@ -132,7 +134,20 @@ public class InventoryListener implements Listener {
 			
 			//Remove items from first and second slots.
 			event.getInventory().setItem(0, null);
-			event.getInventory().setItem(1, null);
+			if (highRepair == true){
+				if (secondItem.getAmount() > 1){
+					Logger.debug("Subtracting 1 raw from the stack of raw mats.");
+					secondItem.setAmount(secondItem.getAmount() - 1);
+					event.getInventory().setItem(1, secondItem);
+					//event.getInventory().setItem(1, null);
+				}else{
+					event.getInventory().setItem(1, null);
+				}
+				
+				//
+			}else{
+				event.getInventory().setItem(1, null);
+			}
 			
 			//Remove item from the 3rd slot.
 			event.setCurrentItem(null);
