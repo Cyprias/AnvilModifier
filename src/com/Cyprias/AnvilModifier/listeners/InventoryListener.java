@@ -20,10 +20,10 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent event) {
 		//No item under player's mouse, no need to do anything.
-		if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
-			return;
+		//if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
+		//	return;
 		
-		if (!(event.getInventory().getType() == InventoryType.ANVIL))
+		if ((event.getInventory().getType() != InventoryType.ANVIL))
 			return;
 		
 		
@@ -40,15 +40,75 @@ public class InventoryListener implements Listener {
 		//Logger.debug("InventoryClickEvent " + event.getCurrentItem().getType() + ", " + cur.getType() );
 		//Logger.debug("InventoryClickEvent isAnvil " + (event.getInventory().getType() == InventoryType.ANVIL) );
 
+		ItemStack firstItem = event.getInventory().getItem(0);
+		ItemStack secondItem = event.getInventory().getItem(1);
+		
+		ItemStack thirdItem = event.getCurrentItem();
+		//Logger.debug("InventoryClickEvent firstItem " + firstItem);
+		//Logger.debug("InventoryClickEvent secondItem " + secondItem);
+		//Logger.debug("InventoryClickEvent thirdItem " + thirdItem);
+		
+		
 		
 		if (event.getRawSlot() == 2 && event.getSlot() == 9) {
 			
-			ItemStack firstItem = event.getInventory().getItem(0);
-			ItemStack secondItem = event.getInventory().getItem(1);
-			
-			ItemStack thirdItem = event.getCurrentItem();
+
 	
 			//ItemMeta meta = thirdItem.getItemMeta();
+			
+			if (thirdItem.getItemMeta() == null && firstItem != null && secondItem != null){
+				
+				if (!secondItem.getType().equals(Material.DIAMOND) && !secondItem.getType().equals(Material.IRON_INGOT) && !secondItem.getType().equals(Material.GOLD_INGOT)){
+					Logger.debug("2nd slot isn't a raw material, exiting.");
+					return;
+				}
+				
+				if (firstItem.getType().toString().contains("DIAMOND") && !secondItem.getType().equals(Material.DIAMOND)){
+					Logger.debug("Raw mat doesn't match first item.");
+					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
+					return;
+				}
+				if (firstItem.getType().toString().contains("IRON") && !secondItem.getType().equals(Material.IRON_INGOT)){
+					Logger.debug("Raw mat doesn't match first item.");
+					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
+					return;
+				}
+				if (firstItem.getType().toString().contains("GOLD") && !secondItem.getType().equals(Material.GOLD_INGOT)){
+					Logger.debug("Raw mat doesn't match first item.");
+					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
+					return;
+				}
+				if (firstItem.getType().toString().contains("BOW") && !secondItem.getType().equals(Material.STRING)){
+					Logger.debug("Raw mat doesn't match first item.");
+					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
+					return;
+				}
+				
+				Logger.debug("Player clicked air slot.");
+				
+				thirdItem = new ItemStack(firstItem);
+			//	short durPerRaw = (short)(int)Math.ceil(thirdItem.getType().getMaxDurability() / 3);
+				
+				
+				
+				
+				//thirdItem.getDurability()
+				//Material.DIAMOND_PICKAXE.getMaxDurability()
+				
+				Material type = thirdItem.getType();
+				//
+				//int percent = (thirdItem.getDurability() / type.getMaxDurability()) * 100;
+				
+				int repairAmount = type.getMaxDurability() / 4;
+				
+				
+				
+				Logger.debug("cur: " + thirdItem.getDurability() + ", max: " + type.getMaxDurability() );
+				
+				thirdItem.setDurability((short) (thirdItem.getDurability() - repairAmount));
+				
+				
+			}
 			
 			
 			if (thirdItem.getItemMeta().getDisplayName() != firstItem.getItemMeta().getDisplayName()){

@@ -213,7 +213,7 @@ public class Plugin extends JavaPlugin {
 					}*/
 					break;
 				case Packets.Server.OPEN_WINDOW:
-					Logger.info("OPEN_WINDOW");
+				//	Logger.info("OPEN_WINDOW");
 					
 					rawItemName.remove(playerName);
 					willCostLevels.remove(playerName);
