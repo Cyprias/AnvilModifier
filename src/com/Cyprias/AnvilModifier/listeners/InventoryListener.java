@@ -1,5 +1,9 @@
 package com.Cyprias.AnvilModifier.listeners;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -10,12 +14,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.xml.sax.SAXException;
 
 import com.Cyprias.AnvilModifier.ChatUtils;
 import com.Cyprias.AnvilModifier.Logger;
+import com.Cyprias.AnvilModifier.Plugin;
 
 public class InventoryListener implements Listener {
-
+	private static final Plugin plugin = Plugin.getInstance();
+	
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -48,9 +55,19 @@ public class InventoryListener implements Listener {
 		//Logger.debug("InventoryClickEvent secondItem " + secondItem);
 		//Logger.debug("InventoryClickEvent thirdItem " + thirdItem);
 		
+		Logger.debug("Anvil inv " + event.getRawSlot() + " " + event.getSlot());
 		
-		
-		if (event.getRawSlot() == 2 && event.getSlot() == 9) {
+		if (event.getRawSlot() == 1 && event.getSlot() == 1) {
+			//2nd slow changed.
+			Logger.debug("2nd slot changed, 3d slot: "  + thirdItem);
+			
+			//for (int i=0; i< event.getInventory().getSize(); i++){
+			//	Logger.debug("inv " + i + ": " + event.getInventory().getItem(i) );
+			//}
+			
+			
+			
+		}else if (event.getRawSlot() == 2 && event.getSlot() == 9) {
 			
 
 	
@@ -107,8 +124,22 @@ public class InventoryListener implements Listener {
 				
 				Logger.debug("cur: " + thirdItem.getDurability() + ", max: " + type.getMaxDurability() );
 				
-				thirdItem.setDurability((short) (thirdItem.getDurability() - repairAmount));
-				highRepair =true;
+				int newDur = thirdItem.getDurability() - repairAmount;
+				if (newDur > type.getMaxDurability())
+					newDur = type.getMaxDurability();
+				
+				thirdItem.setDurability((short) newDur);
+				
+				
+				event.setCurrentItem(thirdItem);
+				
+			//	event.setCursor(thirdItem);
+				
+				ChatUtils.send(p, "Preview box updated with repaired item.");
+				//highRepair =true;
+				
+			//	event.setCancelled(true);// Canceling the event seems to prevent the item from appearing in the slot. 
+				return;
 				
 			}
 			

@@ -158,7 +158,7 @@ public class Plugin extends JavaPlugin {
 					//	Logger.debug("SET_SLOT a " + a + ", b: " + b);
 						
 						if (b == 0){//Item in first slot of anvil.
-							Logger.debug("SET_SLOT first slot: " + c);
+						//	Logger.debug("SET_SLOT first slot: " + c);
 							
 							
 							
@@ -171,7 +171,7 @@ public class Plugin extends JavaPlugin {
 							
 							
 						}else if (b == 2){//Item in third slot of anvil.
-							Logger.debug("SET_SLOT third slot: " + c + " a: " + c.a() + " r: " + c.r());
+						//	Logger.debug("SET_SLOT third slot: " + c + " a: " + c.a() + " r: " + c.r());
 							
 							//rawItemName.containsKey(playerName) && rawItemName.get(playerName).matches(regex)
 							
