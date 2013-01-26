@@ -130,8 +130,9 @@ public class Plugin extends JavaPlugin {
 		//Packets.Server.OPEN_WINDOW
 		//Packets.Server.WINDOW_ITEMS 69	105 
 		//Packets.Server.ITEM_DATA, Packets.Server.SET_EXPERIENCE, Packets.Server.CRAFT_PROGRESS_BAR
+		//, Packets.Server.CLOSE_WINDOW
 		
-		pAdapter = new PacketAdapter(this, ConnectionSide.SERVER_SIDE, Packets.Server.SET_SLOT) {
+		pAdapter = new PacketAdapter(this, ConnectionSide.SERVER_SIDE, Packets.Server.SET_SLOT, Packets.Server.OPEN_WINDOW) {
 			public void onPacketSending(PacketEvent event) {
 				PacketContainer packet = event.getPacket();
 
@@ -210,7 +211,13 @@ public class Plugin extends JavaPlugin {
 						Logger.info("SET_SLOT: " + i + " " + mods.getField(i));
 
 					}*/
-
+					break;
+				case Packets.Server.OPEN_WINDOW:
+					Logger.info("OPEN_WINDOW");
+					
+					rawItemName.remove(playerName);
+					willCostLevels.remove(playerName);
+					
 					break;
 				case Packets.Server.ENTITY_STATUS:
 					break;
@@ -222,13 +229,13 @@ public class Plugin extends JavaPlugin {
 					int count = (Integer) mods.read(1);
 					//int slotData = (Integer) mods.read(1);
 					
-					Logger.info("WINDOW_ITEMS windowId: " + windowId + ", count: " + count);
+					Logger.debug("WINDOW_ITEMS windowId: " + windowId + ", count: " + count);
 					break;
 				case 0x69:	//105
 					Logger.info("Update Window Property");
 					break;
 				default:
-					Logger.info("getPacketID: " + event.getPacketID());
+					Logger.debug("getPacketID: " + event.getPacketID());
 				}
 
 			}

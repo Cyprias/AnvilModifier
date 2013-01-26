@@ -44,6 +44,8 @@ public class InventoryListener implements Listener {
 		if (event.getRawSlot() == 2 && event.getSlot() == 9) {
 			
 			ItemStack firstItem = event.getInventory().getItem(0);
+			ItemStack secondItem = event.getInventory().getItem(1);
+			
 			ItemStack thirdItem = event.getCurrentItem();
 	
 			//ItemMeta meta = thirdItem.getItemMeta();
@@ -51,6 +53,10 @@ public class InventoryListener implements Listener {
 			
 			if (thirdItem.getItemMeta().getDisplayName() != firstItem.getItemMeta().getDisplayName()){
 				Logger.debug("Item has a new name, escaping...");
+				return;
+			}
+			if (firstItem.getType().equals(secondItem.getType())){
+				Logger.debug("Player's combinding two items, escaping...");
 				return;
 			}
 			
