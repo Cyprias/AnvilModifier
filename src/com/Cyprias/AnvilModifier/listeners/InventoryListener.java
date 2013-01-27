@@ -22,188 +22,176 @@ import com.Cyprias.AnvilModifier.Plugin;
 
 public class InventoryListener implements Listener {
 	private static final Plugin plugin = Plugin.getInstance();
-	
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent event) {
-		//No item under player's mouse, no need to do anything.
-		//if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
-		//	return;
-		
+		// No item under player's mouse, no need to do anything.
+		// if (event.getCurrentItem() == null ||
+		// event.getCurrentItem().getType() == Material.AIR)
+		// return;
+
 		if ((event.getInventory().getType() != InventoryType.ANVIL))
 			return;
-		
-		
+
 		HumanEntity e = event.getWhoClicked();
-		
+
 		if (!(e instanceof Player))
 			return;
-			
+
 		Player p = (Player) e;
-		
-		//Logger.debug("getLevel: " + p.getLevel() + " " + p.getTotalExperience());
+
+		// Logger.debug("getLevel: " + p.getLevel() + " " +
+		// p.getTotalExperience());
 
 		ItemStack cur = event.getCursor();
-		//Logger.debug("InventoryClickEvent " + event.getCurrentItem().getType() + ", " + cur.getType() );
-		//Logger.debug("InventoryClickEvent isAnvil " + (event.getInventory().getType() == InventoryType.ANVIL) );
+		// Logger.debug("InventoryClickEvent " +
+		// event.getCurrentItem().getType() + ", " + cur.getType() );
+		// Logger.debug("InventoryClickEvent isAnvil " +
+		// (event.getInventory().getType() == InventoryType.ANVIL) );
 
 		ItemStack firstItem = event.getInventory().getItem(0);
 		ItemStack secondItem = event.getInventory().getItem(1);
-		
-		ItemStack thirdItem = event.getCurrentItem();
-		//Logger.debug("InventoryClickEvent firstItem " + firstItem);
-		//Logger.debug("InventoryClickEvent secondItem " + secondItem);
-		//Logger.debug("InventoryClickEvent thirdItem " + thirdItem);
-		
-		Logger.debug("Anvil inv " + event.getRawSlot() + " " + event.getSlot());
-		
-		if (event.getRawSlot() == 1 && event.getSlot() == 1) {
-			//2nd slow changed.
-			Logger.debug("2nd slot changed, 3d slot: "  + thirdItem);
-			
-			//for (int i=0; i< event.getInventory().getSize(); i++){
-			//	Logger.debug("inv " + i + ": " + event.getInventory().getItem(i) );
-			//}
-			
-			
-			
-		}else if (event.getRawSlot() == 2 && event.getSlot() == 9) {
-			
 
-	
-			//ItemMeta meta = thirdItem.getItemMeta();
+		ItemStack thirdItem = event.getCurrentItem();
+		// Logger.debug("InventoryClickEvent firstItem " + firstItem);
+		// Logger.debug("InventoryClickEvent secondItem " + secondItem);
+		// Logger.debug("InventoryClickEvent thirdItem " + thirdItem);
+
+		Logger.debug("Anvil inv " + event.getRawSlot() + " " + event.getSlot());
+
+		if (event.getRawSlot() == 1 && event.getSlot() == 1) {
+			// 2nd slow changed.
+			Logger.debug("2nd slot changed, 3d slot: " + thirdItem);
+
+			// for (int i=0; i< event.getInventory().getSize(); i++){
+			// Logger.debug("inv " + i + ": " + event.getInventory().getItem(i)
+			// );
+			// }
+
+		} else if (event.getRawSlot() == 2 && event.getSlot() == 9) {
+
+			// ItemMeta meta = thirdItem.getItemMeta();
 			Boolean highRepair = false;
-			if (thirdItem.getItemMeta() == null && firstItem != null && secondItem != null){
-				
-				if (!secondItem.getType().equals(Material.DIAMOND) && !secondItem.getType().equals(Material.IRON_INGOT) && !secondItem.getType().equals(Material.GOLD_INGOT)){
+			if (thirdItem.getItemMeta() == null && firstItem != null && secondItem != null) {
+
+				if (!secondItem.getType().equals(Material.DIAMOND) && !secondItem.getType().equals(Material.IRON_INGOT)
+					&& !secondItem.getType().equals(Material.GOLD_INGOT)) {
 					Logger.debug("2nd slot isn't a raw material, exiting.");
 					return;
 				}
-				
-				if (firstItem.getType().toString().contains("DIAMOND") && !secondItem.getType().equals(Material.DIAMOND)){
+
+				if (firstItem.getType().toString().contains("DIAMOND") && !secondItem.getType().equals(Material.DIAMOND)) {
 					Logger.debug("Raw mat doesn't match first item.");
 					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
 					return;
 				}
-				if (firstItem.getType().toString().contains("IRON") && !secondItem.getType().equals(Material.IRON_INGOT)){
+				if (firstItem.getType().toString().contains("IRON") && !secondItem.getType().equals(Material.IRON_INGOT)) {
 					Logger.debug("Raw mat doesn't match first item.");
 					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
 					return;
 				}
-				if (firstItem.getType().toString().contains("GOLD") && !secondItem.getType().equals(Material.GOLD_INGOT)){
+				if (firstItem.getType().toString().contains("GOLD") && !secondItem.getType().equals(Material.GOLD_INGOT)) {
 					Logger.debug("Raw mat doesn't match first item.");
 					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
 					return;
 				}
-				if (firstItem.getType().toString().contains("BOW") && !secondItem.getType().equals(Material.STRING)){
+				if (firstItem.getType().toString().contains("BOW") && !secondItem.getType().equals(Material.STRING)) {
 					Logger.debug("Raw mat doesn't match first item.");
 					ChatUtils.send(p, secondItem.getType().toString() + " cannot repair " + firstItem.getType().toString() + ".");
 					return;
 				}
-				
+
 				Logger.debug("Player clicked air slot.");
-				
+
 				thirdItem = new ItemStack(firstItem);
-			//	short durPerRaw = (short)(int)Math.ceil(thirdItem.getType().getMaxDurability() / 3);
-				
-				
-				
-				
-				//thirdItem.getDurability()
-				//Material.DIAMOND_PICKAXE.getMaxDurability()
-				
+				// short durPerRaw =
+				// (short)(int)Math.ceil(thirdItem.getType().getMaxDurability()
+				// / 3);
+
+				// thirdItem.getDurability()
+				// Material.DIAMOND_PICKAXE.getMaxDurability()
+
 				Material type = thirdItem.getType();
 				//
-				//int percent = (thirdItem.getDurability() / type.getMaxDurability()) * 100;
-				
-				
-				
+				// int percent = (thirdItem.getDurability() /
+				// type.getMaxDurability()) * 100;
+
 				int repairAmount = type.getMaxDurability() / 4;
-				
-				
-				
-				Logger.debug("cur: " + thirdItem.getDurability() + ", max: " + type.getMaxDurability() );
-				
+
+				Logger.debug("cur: " + thirdItem.getDurability() + ", max: " + type.getMaxDurability());
+
 				int newDur = thirdItem.getDurability() - repairAmount;
 				if (newDur > type.getMaxDurability())
 					newDur = type.getMaxDurability();
-				
+
 				thirdItem.setDurability((short) newDur);
-				
-				
+
 				event.setCurrentItem(thirdItem);
-				
-			//	event.setCursor(thirdItem);
-				
+
+				// event.setCursor(thirdItem);
+
 				ChatUtils.send(p, "Preview box updated with repaired item.");
-				//highRepair =true;
-				
-			//	event.setCancelled(true);// Canceling the event seems to prevent the item from appearing in the slot. 
+				// highRepair =true;
+
+				// event.setCancelled(true);// Canceling the event seems to
+				// prevent the item from appearing in the slot.
 				return;
-				
+
 			}
-			
-			
-			if (thirdItem.getItemMeta().getDisplayName() != firstItem.getItemMeta().getDisplayName()){
+
+			if (thirdItem.getItemMeta().getDisplayName() != firstItem.getItemMeta().getDisplayName()) {
 				Logger.debug("Item has a new name, escaping...");
 				return;
 			}
-			if (firstItem.getType().equals(secondItem.getType())){
+			if (firstItem.getType().equals(secondItem.getType())) {
 				Logger.debug("Player's combinding two items, escaping...");
 				return;
 			}
-			
-			
-			Logger.debug("Anvil craft! " + event.getRawSlot() + " " + event.getSlot()  + ", " + thirdItem.getItemMeta().getDisplayName());
-			
-			//Give player the item in their cursor.
-			//Doing this seems to keep the player's level/exp the same server side by client sees their level change.
+
+			Logger.debug("Anvil craft! " + event.getRawSlot() + " " + event.getSlot() + ", " + thirdItem.getItemMeta().getDisplayName());
+
+			// Give player the item in their cursor.
+			// Doing this seems to keep the player's level/exp the same server
+			// side by client sees their level change.
 			event.setCursor(thirdItem);
-			
-			//Force update their exp so client sees their server level. 
+
+			// Force update their exp so client sees their server level.
 			setExp(p, p.getTotalExperience());
-			
-			//Remove items from first and second slots.
+
+			// Remove items from first and second slots.
 			event.getInventory().setItem(0, null);
-			if (highRepair == true){
-				if (secondItem.getAmount() > 1){
-					Logger.debug("Subtracting 1 raw from the stack of raw mats.");
-					secondItem.setAmount(secondItem.getAmount() - 1);
-					event.getInventory().setItem(1, secondItem);
-					//event.getInventory().setItem(1, null);
-				}else{
-					event.getInventory().setItem(1, null);
-				}
-				
-				//
-			}else{
+			if (secondItem.getAmount() > 1) {
+				Logger.debug("Subtracting 1 raw from the stack of raw mats.");
+				secondItem.setAmount(secondItem.getAmount() - 1);
+				event.getInventory().setItem(1, secondItem);
+				// event.getInventory().setItem(1, null);
+			} else {
 				event.getInventory().setItem(1, null);
 			}
-			
-			//Remove item from the 3rd slot.
+
+			//
+
+			// Remove item from the 3rd slot.
 			event.setCurrentItem(null);
-			
-			//Cancel event so it costs nothing?
+
+			// Cancel event so it costs nothing?
 			event.setCancelled(true);
-			
-			ChatUtils.send(p, "Repaired your " +  thirdItem.getType() + " at no level cost!");
+
+			ChatUtils.send(p, "Repaired your " + thirdItem.getType() + " at no level cost!");
 			Logger.debug("Repaired " + p.getName() + "'s " + thirdItem.getType());
-			
-			
-			
+
 		}
 
 	}
-	
-	
-	public static void setExp(Player player, int amount){
-		//Clear player's XP.
+
+	public static void setExp(Player player, int amount) {
+		// Clear player's XP.
 		player.setTotalExperience(0);
 		player.setExp(0.0F);
 		player.setLevel(0);
 
-		//Give player XP amount. 
+		// Give player XP amount.
 		player.giveExp(amount);
 	}
-	
+
 }
